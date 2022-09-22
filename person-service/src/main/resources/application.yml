@@ -1,1 +1,6 @@
-
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${DISC_SERVER_IP}:8761/eureka/
+  instance:
+    prefer-ip-address: true

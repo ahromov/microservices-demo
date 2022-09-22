@@ -1,26 +1,36 @@
 package com.example.noteservice.controller;
 
-import com.example.noteservice.domain.Note;
 import com.example.noteservice.dto.NoteDto;
-import com.example.noteservice.repository.NoteRepository;
+import com.example.noteservice.service.NoteService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/notes")
 @RequiredArgsConstructor
 public class NoteController {
 
-    private final NoteRepository noteRepository;
+    private final NoteService noteService;
+
+    @GetMapping("/person/{personId}")
+    public List<NoteDto> getAllByPersonId(@PathVariable Long personId) {
+        return noteService.getAllByPersonId(personId);
+    }
+
+    @GetMapping
+    public List<NoteDto> getAll() {
+        return noteService.getAll();
+    }
 
     @PutMapping
-    public Note create(@RequestBody NoteDto noteDto) {
-        return noteRepository.save(Note.builder()
-                .body(noteDto.getBody())
-                .personId(noteDto.getPersonId())
-                .build());
+    public NoteDto create(@RequestBody NoteDto noteDto) {
+        return noteService.save(noteDto);
+    }
+
+    @PatchMapping
+    public NoteDto update(@RequestBody NoteDto noteDto) {
+        return noteService.update(noteDto);
     }
 }

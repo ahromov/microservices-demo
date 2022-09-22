@@ -1,0 +1,5 @@
+/.idea/
+/data/notes/sampledata.mv.db
+/data/persons/sampledata.mv.db
+/person-service/data/persons/sampledata.mv.db
+/data/persons/sampledata.trace.db

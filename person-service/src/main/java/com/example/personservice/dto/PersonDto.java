@@ -20,7 +20,7 @@ public class PersonDto {
     private Long id;
     private String name;
     private String email;
-    private List<NoteDto> noteList = List.of();
+    private List<NoteDto> noteList;
 
     public PersonDto(Person person) {
         this.id = person.getId();

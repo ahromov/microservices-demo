@@ -4,3 +4,13 @@ eureka:
       defaultZone: http://${DISC_SERVER_IP}:8761/eureka/
   instance:
     prefer-ip-address: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      notes:
+        minimumNumberOfCalls: 5
+
+feign:
+  circuitbreaker:
+    enabled: true

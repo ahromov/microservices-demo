@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:14.2-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: mservices_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  config-service:
+    build:
+      context: ./config-service
+      dockerfile: Dockerfile  # Замініть це на ім'я вашого Dockerfile, якщо воно відрізняється
+    container_name: config-service-container
+    ports:
+      - "8888:8888"
+    environment:
+      - DISC_SERVER_IP=discovery-service
+      - DB_SERVER_IP=db
+
+  discovery-service:
+    build:
+      context: ./discovery-service
+      dockerfile: Dockerfile  # Замініть це на ім'я вашого Dockerfile, якщо воно відрізняється
+    container_name: discovery-service-container
+    ports:
+      - "8761:8761"
+
+  gateway-service:
+    build:
+      context: ./gateway-service
+      dockerfile: Dockerfile  # Замініть це на ім'я вашого Dockerfile, якщо воно відрізняється
+    container_name: gateway-service-container
+    ports:
+      - "8080:8080"
+    environment:
+      - DISC_SERVER_IP=discovery-service
+
+  note-service:
+    build:
+      context: ./note-service
+      dockerfile: Dockerfile  # Замініть це на ім'я вашого Dockerfile, якщо воно відрізняється
+    container_name: note-service-container
+    ports:
+      - 8082:8082  # Замініть на потрібний вам порт
+    environment:
+      - WORK_ENV=$WORK_ENV
+      - SERVER_IP=127.0.0.1
+      - DB_SERVER_IP=127.0.0.1
+      - DISC_SERVER_IP=discovery-service
+
+  person-service:
+      build:
+        context: ./person-service
+        dockerfile: Dockerfile  # Замініть це на ім'я вашого Dockerfile, якщо воно відрізняється
+      container_name: person-service-container
+      ports:
+        - 8083:8083  # Замініть на потрібний вам порт
+      environment:
+        - WORK_ENV=$WORK_ENV
+        - SERVER_IP=127.0.0.1
+        - DB_SERVER_IP=127.0.0.1
+        - DISC_SERVER_IP=discovery-service
+
+
+
+
